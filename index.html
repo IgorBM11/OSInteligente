@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="OS Inteligente: ordens de serviço com IA, do registro à decisão. Proposta Starbridge para a Opy Health.">
+<link rel="icon" type="image/png" href="assets/logo-starbridge.png">
+<title>OS Inteligente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: página em esteira, faixas claras e escuras alternadas, conteúdo em coluna de 1120px */
+:root{
+  --primary:#3d5a6b; --accent:#5cb69f; --accent-deep:#2f8a72; --ink:#2c3e50; --muted:#5a6c7d;
+  --bg-light:#f8fafb; --white:#ffffff; --line:#e3e9ec; --dark:#22313c; --dark-2:#2c3e50; --on-dark:#d6e1e6; --on-dark-muted:#9fb3bd;
+  --display:'Space Grotesk', 'Segoe UI', Arial, sans-serif; --text:'Inter', 'Segoe UI', Arial, sans-serif;
+  --r:10px; --shadow:0 1px 2px rgba(44,62,80,.05), 0 6px 18px rgba(44,62,80,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--text);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+h1,h2,h3,h4{font-family:var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance;color:var(--ink)}
+p{margin:0}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
+section{padding-block:64px;position:relative}
+section.alt{background:var(--bg-light)}
+section.dark{background:var(--dark);color:var(--on-dark)}
+section.dark h2,section.dark h3{color:#fff}
+.eyebrow{font-family:var(--text);font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-deep)}
+section.dark .eyebrow{color:var(--accent)}
+.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:36px;max-width:720px}
+.sec-head h2{font-size:clamp(26px,3.2vw,36px);font-weight:700;line-height:1.12}
+.sec-head p{color:var(--muted);font-size:16px}
+section.dark .sec-head p{color:var(--on-dark-muted)}
+.num{font-family:var(--display);font-weight:700;color:var(--accent-deep);font-variant-numeric:tabular-nums}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:#e6f4ef;color:var(--accent-deep)}
+.tag.neutral{background:#eaf0f3;color:var(--primary)}
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:22px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* nav */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:rgba(255,255,255,.85)}
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(255,255,255,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:24px;height:60px}
+.nav .brand{display:flex;align-items:center;gap:10px;flex:none;text-decoration:none}
+.nav .brand img{height:22px;width:auto}
+.nav .brand .x{color:var(--muted);font-size:13px}
+.nav .brand img.client{height:26px}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.nav ul::-webkit-scrollbar{display:none}
+.nav a.lnk{display:block;white-space:nowrap;text-decoration:none;font-size:13px;font-weight:500;color:var(--muted);padding:6px 10px;border-radius:6px}
+.nav a.lnk:hover{color:var(--ink);background:var(--bg-light)}
+.nav a.lnk.on{color:var(--accent-deep);background:#e6f4ef}
+
+/* hero */
+#inicio{padding-block:88px 72px;background:var(--white)}
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:56px;align-items:center}
+.hero h1{font-size:clamp(34px,4.6vw,54px);font-weight:700;line-height:1.04;margin:16px 0 18px}
+.hero h1 em{font-style:normal;color:var(--accent-deep)}
+.hero .lead{font-size:17px;color:var(--muted);max-width:56ch}
+.hero .who{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px 22px;font-size:13.5px;color:var(--muted)}
+.hero .who b{color:var(--ink);font-weight:600}
+.hero .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:14px;font-weight:600;padding:10px 16px;border-radius:8px;border:1px solid var(--line);color:var(--ink);background:var(--white)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#0f2a22}
+.btn:hover{border-color:var(--accent)}
+.hero-figs{display:grid;gap:12px}
+.fig{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:baseline;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg-light)}
+.fig .v{font-family:var(--display);font-weight:700;font-size:30px;color:var(--ink);font-variant-numeric:tabular-nums;grid-row:span 2}
+.fig .k{font-size:13.5px;color:var(--ink);font-weight:500}
+.fig .s{font-size:12px;color:var(--muted)}
+
+/* diagnóstico */
+.diag{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.diag .card h3{font-size:17px;margin:12px 0 8px}
+.diag .card p{color:var(--muted);font-size:14px}
+.ico{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:#e6f4ef;color:var(--accent-deep)}
+.ico svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.quote{margin-top:28px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;padding:22px 24px;border-left:3px solid var(--accent);background:var(--white);border-radius:0 var(--r) var(--r) 0;box-shadow:var(--shadow)}
+.quote .q{font-family:var(--display);font-size:40px;line-height:.8;color:var(--accent)}
+.quote p{font-size:15.5px;color:var(--ink)}
+.quote small{display:block;margin-top:8px;color:var(--muted);font-size:12.5px}
+
+/* objetivo */
+.goal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:48px;align-items:start}
+.goal .big{font-family:var(--display);font-size:clamp(24px,2.8vw,32px);font-weight:600;line-height:1.2;color:#fff;letter-spacing:-.02em}
+.goal .big em{font-style:normal;color:var(--accent)}
+.pillars{display:grid;gap:12px}
+.pillar{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:16px 18px;border:1px solid rgba(255,255,255,.1);border-radius:var(--r);background:rgba(255,255,255,.03)}
+.pillar .n{font-family:var(--display);font-weight:700;font-size:20px;color:var(--accent)}
+.pillar h3{font-size:16px;margin-bottom:4px}
+.pillar p{font-size:14px;color:var(--on-dark-muted)}
+
+/* módulos */
+.mod{display:grid;gap:28px}
+.mod-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.mod-head .t{display:flex;flex-direction:column;gap:8px;max-width:640px}
+.mod-head .idx{font-family:var(--display);font-weight:700;font-size:15px;color:var(--accent-deep);letter-spacing:.04em}
+.mod-head h2{font-size:clamp(24px,3vw,32px);line-height:1.15}
+.mod-head p{color:var(--muted)}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:40px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps .n{font-family:var(--display);font-weight:700;color:var(--accent-deep);font-size:15px;padding-top:1px}
+.steps h4{font-size:15.5px;margin-bottom:2px}
+.steps p{font-size:14px;color:var(--muted)}
+.feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.feats.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.feat{padding:18px;border:1px solid var(--line);border-radius:var(--r);background:var(--white)}
+section.alt .feat{background:var(--white)}
+.feat h4{font-size:15px;margin-bottom:6px}
+.feat p{font-size:13.5px;color:var(--muted)}
+
+/* phone mockup */
+.phone{justify-self:center;width:min(320px,100%);border-radius:28px;padding:12px;background:var(--dark);box-shadow:0 20px 50px rgba(34,49,60,.25)}
+.screen{border-radius:18px;background:var(--white);padding:18px 16px;display:grid;gap:12px}
+.screen .top{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)}
+.screen .title{font-family:var(--display);font-weight:700;font-size:17px}
+.audio{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--bg-light);border:1px solid var(--line)}
+.audio .play{width:28px;height:28px;border-radius:50%;background:var(--accent);display:grid;place-items:center;flex:none}
+.audio .play svg{width:12px;height:12px;fill:#0f2a22}
+.wave{display:flex;align-items:center;gap:2px;height:24px;flex:1}
+.wave i{display:block;width:3px;border-radius:2px;background:var(--primary);opacity:.55}
+.audio .tm{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.transcript{font-size:12.5px;color:var(--ink);background:#f1f7f5;border-radius:8px;padding:10px 12px;line-height:1.5}
+.transcript b{font-weight:600;color:var(--accent-deep);font-size:11px;letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:3px}
+.fields{display:grid;gap:6px}
+.field{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:7px 10px;border-radius:7px;border:1px solid var(--line)}
+.field span{color:var(--muted)}
+.field b{font-weight:600;text-align:right}
+.field.ai{border-color:#bfe3d7;background:#f4fbf8}
+.screen .ok{display:block;text-align:center;padding:10px;border-radius:8px;background:var(--accent);color:#0f2a22;font-weight:600;font-size:13.5px}
+.screen .note{font-size:11px;color:var(--muted);text-align:center}
+
+/* base diagram */
+.flow{display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,.9fr) 40px minmax(0,1fr);align-items:center;gap:0}
+.col{display:grid;gap:10px}
+.node{padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);background:var(--white);font-size:13.5px}
+.node b{display:block;font-family:var(--display);font-size:14.5px;color:var(--ink)}
+.node span{color:var(--muted);font-size:12.5px}
+.core{padding:26px 20px;border-radius:14px;background:var(--dark);color:#fff;text-align:center;display:grid;gap:8px}
+.core b{font-family:var(--display);font-size:19px}
+.core span{color:var(--on-dark-muted);font-size:13px}
+.arrow{display:grid;place-items:center;color:var(--accent-deep)}
+.arrow svg{width:28px;height:14px}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+
+/* dashboard mock */
+.dash{border:1px solid var(--line);border-radius:14px;background:var(--white);box-shadow:var(--shadow);overflow:hidden}
+.dash .bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.dash .bar b{font-family:var(--display);color:var(--ink);font-size:14px}
+.dash .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}
+.dash .kpi{padding:14px 16px;border-right:1px solid var(--line)}
+.dash .kpi:last-child{border-right:none}
+.dash .kpi span{font-size:11.5px;color:var(--muted);display:block}
+.dash .kpi b{font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums}
+.dash .body{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:0}
+.dash .panel{padding:16px;min-width:0}
+.dash .panel+.panel{border-left:1px solid var(--line)}
+.dash .ptitle{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.hbar{display:grid;grid-template-columns:96px 1fr 34px;gap:8px;align-items:center;font-size:12px;margin-bottom:7px}
+.hbar .tr{height:10px;border-radius:5px;background:var(--bg-light);overflow:hidden}
+.hbar .tr i{display:block;height:100%;border-radius:5px;background:var(--primary)}
+.hbar.hi .tr i{background:var(--accent)}
+.hbar span:last-child{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.alertrow{display:grid;grid-template-columns:8px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:12.5px}
+.alertrow:first-of-type{border-top:none}
+.alertrow i{width:8px;height:8px;border-radius:50%;background:#d39b2a;margin-top:6px}
+.alertrow.g i{background:var(--accent)}
+.alertrow span{color:var(--muted);display:block;font-size:11.5px}
+.illus{font-size:11.5px;color:var(--muted);margin-top:10px}
+
+/* ia */
+.ia-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.ia{padding:22px;border-radius:var(--r);border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);display:grid;gap:8px}
+.ia h3{font-size:17px}
+.ia p{font-size:14px;color:var(--on-dark-muted)}
+.ia .tag{background:rgba(92,182,159,.14);color:var(--accent)}
+.tech{margin-top:22px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;padding:20px 22px;border-radius:var(--r);background:rgba(92,182,159,.08);border:1px solid rgba(92,182,159,.3)}
+.tech .k{font-family:var(--display);font-weight:700;font-size:26px;color:var(--accent)}
+.tech p{font-size:14px;color:var(--on-dark)}
+
+/* caminhos */
+.paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.path{display:grid;gap:14px;padding:24px;border-radius:12px;border:1px solid var(--line);background:var(--white);box-shadow:var(--shadow)}
+.path.b{border-color:#bfe3d7}
+.path h3{font-size:20px}
+.path .sub{color:var(--muted);font-size:14px}
+.path ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.path li{display:grid;grid-template-columns:18px 1fr;gap:8px;font-size:14px}
+.path li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:8px}
+.path li.minus::before{background:#c9d3d8}
+.path .foot{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.decision{margin-top:18px;font-size:14px;color:var(--muted);display:flex;gap:10px;align-items:flex-start}
+
+/* potencial */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:stretch}
+.inputs{display:grid;gap:18px;padding:24px}
+.in label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:500;margin-bottom:6px}
+.in label output{font-family:var(--display);font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.in input[type=range]{width:100%;accent-color:var(--accent-deep)}
+.in small{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.res{padding:20px;border-radius:var(--r);background:var(--white);border:1px solid var(--line)}
+.res span{font-size:12.5px;color:var(--muted);display:block}
+.res b{font-family:var(--display);font-size:28px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.res.hero-r{grid-column:span 2;background:var(--dark);border-color:var(--dark)}
+.res.hero-r span{color:var(--on-dark-muted)}
+.res.hero-r b{color:#fff;font-size:40px}
+.res.hero-r b em{font-style:normal;color:var(--accent);font-size:20px;margin-left:6px}
+.qual{margin-top:22px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.qual div{font-size:13.5px;padding:14px 16px;border-left:2px solid var(--accent);background:var(--white);border-radius:0 8px 8px 0}
+.qual b{display:block;font-family:var(--display);font-size:14.5px;margin-bottom:2px}
+.qual span{color:var(--muted)}
+
+/* cronograma */
+.phases{display:grid;gap:12px}
+.phase{display:grid;grid-template-columns:150px minmax(0,1fr) 140px;gap:24px;align-items:start;padding:18px 22px;border:1px solid var(--line);border-radius:var(--r);background:var(--white)}
+.phase .ph{display:grid;gap:2px}
+.phase .ph span{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep)}
+.phase .ph b{font-family:var(--display);font-size:16.5px;line-height:1.25}
+.phase ul{margin:0;padding-left:18px;font-size:14px;color:var(--muted);display:grid;gap:3px}
+.phase .dur{justify-self:end;text-align:right}
+.phase .dur b{font-family:var(--display);font-size:20px;display:block;font-variant-numeric:tabular-nums}
+.phase .dur span{font-size:12px;color:var(--muted)}
+.gantt{margin-top:22px;border:1px solid var(--line);border-radius:var(--r);background:var(--white);padding:18px 20px;overflow-x:auto}
+.grow{display:grid;grid-template-columns:150px repeat(18,minmax(18px,1fr));gap:3px;align-items:center;min-width:620px;font-size:12px;margin-bottom:5px}
+.grow .nm{color:var(--ink);font-weight:500;white-space:nowrap}
+.grow i{display:block;height:14px;border-radius:3px}
+.grow.hd span{font-size:10.5px;color:var(--muted);text-align:center;font-variant-numeric:tabular-nums}
+.c0{background:#c9d3d8}.c1{background:var(--accent)}.c2{background:var(--primary)}.c3{background:#87c9b6}.c4{background:#6f8c9c}.c5{background:repeating-linear-gradient(45deg,#e6f4ef 0 4px,#cbe8dd 4px 8px)}
+
+/* riscos */
+.rp{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px}
+.risk{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:16px 0;border-top:1px solid rgba(255,255,255,.1)}
+.risk:first-of-type{border-top:none;padding-top:0}
+.risk .n{font-family:var(--display);font-weight:700;color:var(--accent);font-size:15px}
+.risk h3{font-size:15.5px;margin-bottom:3px}
+.risk p{font-size:14px;color:var(--on-dark-muted)}
+.prem{padding:22px;border-radius:var(--r);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.prem h3{font-size:16px;margin-bottom:12px}
+.prem ul{margin:0;padding-left:18px;display:grid;gap:7px;font-size:14px;color:var(--on-dark)}
+
+/* investimento */
+.inv{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px}
+.inv-main{padding:28px;border-radius:12px;background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow);display:grid;gap:18px}
+.inv-main .price{font-family:var(--display);font-weight:700;font-size:clamp(34px,4vw,44px);letter-spacing:-.02em}
+.inv-main .price small{font-size:15px;color:var(--muted);font-weight:500;margin-left:8px}
+.inv-table{width:100%;border-collapse:collapse;font-size:14px}
+.inv-table td{padding:9px 0;border-top:1px solid var(--line)}
+.inv-table td:last-child{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.inv-side{display:grid;gap:14px}
+.inv-side .card h3{font-size:16px;margin-bottom:6px}
+.inv-side .card p{font-size:14px;color:var(--muted)}
+.inv-side .card .v{font-family:var(--display);font-weight:700;font-size:24px;color:var(--accent-deep);margin-bottom:4px}
+
+/* pauta */
+.agenda{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ask{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:16px 18px;border:1px solid var(--line);border-radius:var(--r);background:var(--white)}
+.ask .n{font-family:var(--display);font-weight:700;color:var(--accent-deep)}
+.ask h3{font-size:15px;margin-bottom:3px}
+.ask p{font-size:13.5px;color:var(--muted)}
+.who-box{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:14px;color:var(--muted)}
+.chip{padding:6px 12px;border-radius:999px;background:var(--white);border:1px solid var(--line);color:var(--ink);font-size:13px;font-weight:500}
+
+/* contato */
+#contato{background:var(--primary);color:#e8f0f3;padding-block:56px}
+.contact{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.contact h2{color:#fff;font-size:clamp(24px,3vw,32px);max-width:20ch}
+.contact p{color:#c8d7de;margin-top:8px}
+.contact img{height:30px;width:auto}
+.contact .people{display:grid;gap:4px;font-size:14px;text-align:right}
+.contact .people b{color:#fff;font-family:var(--display);font-size:16px}
+
+@media (max-width:900px){
+  .hero,.goal,.split,.calc,.rp,.inv{grid-template-columns:minmax(0,1fr)}
+  .diag,.feats,.feats.four,.qual{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .flow{grid-template-columns:minmax(0,1fr)}
+  .flow .arrow{transform:rotate(90deg);height:34px}
+  .paths,.ia-grid,.agenda{grid-template-columns:minmax(0,1fr)}
+  .phase{grid-template-columns:minmax(0,1fr)}
+  .phase .dur{justify-self:start;text-align:left}
+  .dash .body{grid-template-columns:minmax(0,1fr)}
+  .dash .panel+.panel{border-left:none;border-top:1px solid var(--line)}
+}
+@media (max-width:560px){
+  section{padding-block:48px}
+  .diag,.feats,.feats.four,.qual,.results{grid-template-columns:minmax(0,1fr)}
+  .res.hero-r{grid-column:auto}
+  .dash .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav .brand .x,.nav .brand img.client{display:none}
+  .contact .people{text-align:left}
+}
+</style>
+<style>
+/* hero */
+.hero h1{font-size:clamp(40px,5.4vw,64px);margin:16px 0 10px}
+.hero .sub{font-family:var(--display);font-weight:500;font-size:clamp(18px,2vw,22px);color:var(--primary);letter-spacing:-.01em;margin-bottom:18px}
+.hero-figs{grid-template-columns:minmax(0,1fr);gap:12px;max-width:340px;justify-self:end;width:100%}
+.fig{grid-template-columns:minmax(0,1fr);text-align:center;justify-items:center;gap:2px;padding:18px 20px;min-height:112px;align-content:center;background:var(--white);box-shadow:var(--shadow)}
+.fig .v{grid-row:auto;font-size:32px;line-height:1.1;color:var(--accent-deep)}
+.fig .k{font-size:14px}
+.fig .s{font-size:12.5px}
+
+/* desafio */
+.pain{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.pain .card{padding:22px 20px;display:grid;gap:10px;align-content:start;border-top:3px solid var(--primary)}
+.pain .ico{background:#e9eff2;color:var(--primary)}
+.pain h3{font-size:16px}
+.pain p{font-size:14px;color:var(--muted)}
+
+/* objetivo */
+#objetivo{padding-block:72px}
+.obj{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:56px;align-items:center}
+.obj .big{font-family:var(--display);font-size:clamp(26px,3.2vw,38px);font-weight:600;line-height:1.16;color:#fff;letter-spacing:-.02em;margin:14px 0 34px}
+.obj .big em{font-style:normal;color:var(--accent)}
+.pil{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid rgba(255,255,255,.14)}
+.pil div{padding:20px 22px 0 0}
+.pil div+div{padding-left:22px;border-left:1px solid rgba(255,255,255,.14)}
+.pil .n{display:block;font-family:var(--display);font-weight:700;font-size:34px;color:var(--accent);line-height:1;margin-bottom:12px}
+.pil h3{font-size:17px;margin-bottom:6px}
+.pil p{font-size:14px;color:var(--on-dark-muted)}
+.obj .screen,.obj .screen .title,.obj .screen .field b{color:var(--ink)}
+.obj .screen .field span,.obj .screen .top{color:var(--muted)}
+.obj .phone{justify-self:center;box-shadow:0 24px 60px rgba(0,0,0,.35);background:#121c24}
+
+/* solução */
+.sol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.sol .feat{display:grid;gap:8px;align-content:start;padding:22px 20px;border-radius:var(--r);border:1px solid var(--line);box-shadow:var(--shadow);background:var(--white);position:relative;overflow:hidden}
+.sol .feat::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--accent)}
+.sol .feat .n{font-family:var(--display);font-weight:700;color:var(--accent-deep);font-size:14px}
+.sol .feat h4{font-size:16.5px}
+.sol .feat p{font-size:14px;color:var(--muted)}
+.how{margin-top:40px;padding:28px;border-radius:12px;background:var(--bg-light);border:1px solid var(--line)}
+.how-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.how-head h3{font-size:19px}
+.how-head p{font-size:14px;color:var(--muted)}
+.track{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;position:relative}
+.track::before{content:"";position:absolute;left:18px;right:18px;top:17px;height:2px;background:linear-gradient(90deg,var(--accent),#bfe3d7)}
+.stp{position:relative;display:grid;gap:8px;align-content:start}
+.stp .dot{width:36px;height:36px;border-radius:50%;background:var(--white);border:2px solid var(--accent);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:13px;color:var(--accent-deep);position:relative}
+.stp h4{font-size:15px}
+.stp p{font-size:13.5px;color:var(--muted)}
+.flex-note{margin-top:16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.note-row{display:grid;grid-template-columns:34px 1fr;gap:14px;padding:18px 20px;border-radius:var(--r);border:1px dashed #c5d3d9;background:var(--white)}
+.note-row h4{font-size:15px;margin-bottom:4px}
+.note-row p{font-size:13.5px;color:var(--muted)}
+
+/* ganhos */
+.gains{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gain{padding:24px 24px 26px;display:grid;gap:8px;align-content:start;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.gain:nth-child(3n){border-right:none}
+.gain:nth-child(n+4){border-bottom:none}
+.gain .ico{background:transparent;border:1.5px solid var(--accent);color:var(--accent-deep);border-radius:50%}
+.gain h3{font-size:16.5px}
+.gain p{font-size:14px;color:var(--muted)}
+.insight{margin-top:18px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px;align-items:center;padding:26px 30px;border-radius:12px;background:var(--dark);color:var(--on-dark)}
+.insight .big{font-family:var(--display);font-weight:700;font-size:clamp(34px,4.4vw,48px);color:var(--accent);letter-spacing:-.03em;white-space:nowrap;line-height:1}
+.insight p{font-size:15.5px;color:#e6eef1}
+.insight small{display:block;margin-top:6px;color:var(--on-dark-muted);font-size:12.5px}
+
+/* cronograma */
+.phase{border-left:3px solid var(--accent)}
+.phase.p0{border-left-color:#c5d3d9}
+.phase.pc{border-left-style:dashed}
+
+/* próximos */
+.next{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;counter-reset:nx}
+.nx{display:grid;gap:10px;align-content:start;padding:24px;border-radius:12px;background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow)}
+.nx .n{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;color:var(--accent-deep);font-size:14px;letter-spacing:.04em}
+.nx .n::after{content:"";flex:1;height:1px;background:var(--line)}
+.nx h3{font-size:17px}
+.nx p{font-size:14px;color:var(--muted)}
+.nx.last{background:var(--primary);border-color:var(--primary)}
+.nx.last h3{color:#fff}.nx.last p{color:#d3e0e6}.nx.last .n{color:var(--accent)}.nx.last .n::after{background:rgba(255,255,255,.2)}
+
+#contato .contact img{height:30px}
+@media (max-width:900px){
+  .hero-figs{justify-self:stretch;max-width:none;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pain,.sol{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .obj,.flex-note,.next{grid-template-columns:minmax(0,1fr)}
+  .track{grid-template-columns:repeat(2,minmax(0,1fr))}.track::before{display:none}
+  .gains{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gain{border-right:1px solid var(--line)!important;border-bottom:1px solid var(--line)!important}
+  .gain:nth-child(2n){border-right:none!important}
+  .insight{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .hero-figs,.pain,.sol,.pil,.track,.gains{grid-template-columns:minmax(0,1fr)}
+  .pil div+div{padding-left:0;border-left:none;border-top:1px solid rgba(255,255,255,.14)}
+  .gain{border-right:none!important}
+}
+
+.how-foot{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-size:13.5px;color:var(--muted)}
+.how-foot b{color:var(--ink);font-weight:600}
+.tl{border:1px solid var(--line);border-radius:12px;background:var(--white);box-shadow:var(--shadow);overflow:hidden}
+.tl-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--line)}
+.tl-row:first-child{border-top:none}
+.tl-head{background:var(--bg-light);padding-block:10px}
+.tl-info{display:grid;gap:3px;min-width:0}
+.tl-ph{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-deep)}
+.tl-info b{font-family:var(--display);font-size:16.5px;font-weight:600;color:var(--ink);letter-spacing:-.01em}
+.tl-info ul{margin:4px 0 0;padding-left:16px;font-size:13.5px;color:var(--muted);display:grid;gap:2px}
+.tl-track{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));align-items:center;height:30px;position:relative;background:repeating-linear-gradient(90deg,transparent 0 calc(20% - 1px),var(--line) calc(20% - 1px) 20%)}
+.tl-ticks{height:auto;background:none}
+.tl-ticks span{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}
+.tl-bar{display:flex;align-items:center;height:26px;border-radius:6px;padding:0 10px;font-style:normal;min-width:0}
+.tl-bar span{font-size:11.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t0 .tl-bar,.lg.t0{background:#d5dfe3}.t0 .tl-bar span{color:var(--primary)}
+.t1 .tl-bar,.lg.t1{background:var(--accent)}.t1 .tl-bar span{color:#0f2a22}
+.t2 .tl-bar,.lg.t2{background:var(--primary)}.t2 .tl-bar span{color:#fff}
+.t3 .tl-bar,.lg.t3{background:var(--dark)}.t3 .tl-bar span{color:var(--accent)}
+.t2{background:#f6f9fa}
+.tl-bar.dash{background:repeating-linear-gradient(45deg,#e6f4ef 0 6px,#d1ece2 6px 12px)}.tl-bar.dash span{color:var(--accent-deep)}
+.tl-legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:14px;font-size:13px;color:var(--muted)}
+.tl-legend span{display:inline-flex;align-items:center;gap:8px}
+.lg{display:inline-block;width:14px;height:10px;border-radius:3px}
+.foot-c{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.foot-c img{height:32px;width:auto}
+.foot-c span{font-size:14px;color:#d3e0e6}
+@media (max-width:760px){.tl-row{grid-template-columns:minmax(0,1fr);gap:10px}.tl-head{display:none}}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Seções da proposta">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Início">
+      <img src="assets/logo-starbridge.png" alt="Starbridge">
+      <span class="x">×</span>
+      <img class="client" src="assets/logo-cliente.png" alt="Opy Health">
+    </a>
+    <ul>
+      <li><a class="lnk" href="#desafio">Desafio</a></li>
+      <li><a class="lnk" href="#objetivo">Objetivo</a></li>
+      <li><a class="lnk" href="#solucao">Solução</a></li>
+      <li><a class="lnk" href="#ganhos">Ganhos</a></li>
+      <li><a class="lnk" href="#cronograma">Cronograma</a></li>
+      <li><a class="lnk" href="#riscos">Riscos</a></li>
+      <li><a class="lnk" href="#proximos">Próximos passos</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+<!-- INÍCIO -->
+<section id="inicio">
+  <div class="wrap hero">
+    <div>
+      <span class="eyebrow">Manutenção Predial · Opy Health</span>
+      <h1><em>OS</em> Inteligente</h1>
+      <p class="sub">Ordens de serviço com IA, do registro à decisão</p>
+      <p class="lead">Registro simples para quem está em campo, dados confiáveis para quem decide e IA para transformar o histórico da manutenção em eficiência.</p>
+    </div>
+    <div class="hero-figs" aria-label="Escala da operação">
+      <div class="fig"><span class="v">~100</span><span class="k">ordens de serviço por dia</span><span class="s">em um único hospital</span></div>
+      <div class="fig"><span class="v">3</span><span class="k">sistemas com dados de manutenção</span><span class="s">ordens de serviço, insumos e mão de obra</span></div>
+      <div class="fig"><span class="v">Manual</span><span class="k">conciliação entre as bases</span><span class="s">difícil de mapear e de manter</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DESAFIO -->
+<section id="desafio" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">O desafio</span>
+      <h2>A manutenção gera muitos dados, mas poucos dados confiáveis</h2>
+      <p>Sem informações corretas na origem, cada análise exige um esforço manual e o custo real da manutenção continua difícil de enxergar.</p>
+    </div>
+    <div class="pain">
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h7"/></svg></div><h3>Registro difícil e incompleto</h3><p>Formulários longos e pouco claros levam a campos vazios, descrições genéricas e ordens de serviço fechadas fora do tempo.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M7 7h10v10H7z"/><path d="M3 12h4M17 12h4M12 3v4M12 17v4"/></svg></div><h3>Dados fragmentados</h3><p>Ordens de serviço, insumos e custo de mão de obra ficam em sistemas diferentes, sem ligação automática entre eles.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16"/><path d="M8 15l3-4 3 2 4-6"/></svg></div><h3>Conciliação trabalhosa</h3><p>Cruzar e padronizar as bases é difícil de mapear e não se sustenta como rotina.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg></div><h3>Custo e desvios pouco visíveis</h3><p>Retrabalho, recorrências e consumo fora do padrão só aparecem quando alguém procura por eles.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- OBJETIVO -->
+<section id="objetivo" class="dark">
+  <div class="wrap obj">
+    <div>
+      <span class="eyebrow">Objetivo do projeto</span>
+      <p class="big">Tornar a manutenção da Opy uma referência em <em>dados confiáveis</em>, custo visível e uso de IA, com um modelo replicável para os outros ativos.</p>
+      <div class="pil">
+        <div><span class="n">01</span><h3>Dado certo na origem</h3><p>Registro rápido, com a IA preenchendo o que hoje fica vazio.</p></div>
+        <div><span class="n">02</span><h3>Informação conectada</h3><p>Ordens de serviço, insumos e mão de obra na mesma base.</p></div>
+        <div><span class="n">03</span><h3>Decisão com dados</h3><p>Visão contínua e análises que apontam onde agir.</p></div>
+      </div>
+    </div>
+    <div class="phone" role="img" aria-label="Exemplo de tela do app com uma ordem de serviço preenchida a partir de um áudio">
+      <div class="screen">
+        <div class="top"><span>Nova ordem de serviço</span><span>09:42</span></div>
+        <div class="title">Registro por áudio</div>
+        <div class="audio"><span class="play"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z"/></svg></span><span class="wave" id="wave"></span><span class="tm">0:14</span></div>
+        <div class="transcript"><b>Transcrição</b>“Infiltração no teto do corredor, perto do leito 12. Está pingando, parece ser cano.”</div>
+        <div class="fields">
+          <div class="field ai"><span>Tipo de serviço</span><b>Predial · hidráulica</b></div>
+          <div class="field ai"><span>Ocorrência</span><b>Infiltração no teto</b></div>
+          <div class="field ai"><span>Causa provável</span><b>Vazamento em tubulação</b></div>
+          <div class="field ai"><span>Prioridade</span><b>Alta</b></div>
+        </div>
+        <span class="ok">Confirmar ordem de serviço</span>
+        <span class="note">Exemplo ilustrativo de captura por áudio · campos em verde preenchidos pela IA</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUÇÃO -->
+<section id="solucao">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">A solução</span>
+      <h2>Um sistema de ordens de serviço com IA, do registro à análise</h2>
+      <p>Uma visão inicial, que evolui com o diagnóstico conjunto da operação.</p>
+    </div>
+    <div class="sol">
+      <div class="feat"><span class="n">01</span><h4>Registro inteligente</h4><p>O técnico registra do jeito mais simples, por áudio, foto ou mensagem. A IA interpreta e preenche a ordem de serviço.</p></div>
+      <div class="feat"><span class="n">02</span><h4>Base única</h4><p>Integração com os sistemas atuais e custo de cada ordem de serviço calculado automaticamente.</p></div>
+      <div class="feat"><span class="n">03</span><h4>Visão em tempo real</h4><p>Indicadores de volume, prazo e custo sempre atualizados, no painel de indicadores ou em um painel próprio.</p></div>
+      <div class="feat"><span class="n">04</span><h4>IA analítica</h4><p>Tendências, recorrências e alertas para orientar onde agir primeiro.</p></div>
+    </div>
+
+    <div class="how">
+      <div class="how-head"><h3>Como funciona o registro</h3><p>Menos digitação, mais informação.</p></div>
+      <div class="track">
+        <div class="stp"><span class="dot">1</span><h4>Captura simples</h4><p>Áudio, foto ou mensagem: o problema é descrito em poucos segundos, sem formulário.</p></div>
+        <div class="stp"><span class="dot">2</span><h4>Preenchimento pela IA</h4><p>Local, tipo de serviço, ocorrência e prioridade identificados.</p></div>
+        <div class="stp"><span class="dot">3</span><h4>Confirmação</h4><p>O técnico confere e ajusta em um toque.</p></div>
+        <div class="stp"><span class="dot">4</span><h4>Pronta para análise</h4><p>Abertura e fechamento com horário automático, já na base única.</p></div>
+      </div>
+      <p class="how-foot"><b>Formato de captura em aberto.</b> O áudio é uma sugestão inicial. Fotos, mensagens e outros formatos serão definidos com as equipes: o objetivo é tornar o registro o mais fácil possível.</p>
+    </div>
+
+    <div class="flex-note">
+      <div class="note-row"><div class="ico"><svg viewBox="0 0 24 24"><path d="M8 7h8M8 12h8M8 17h5"/><rect x="4" y="3" width="16" height="18" rx="2"/></svg></div><div><h4>Compatível com o ecossistema atual</h4><p>A solução pode se integrar aos sistemas em uso ou evoluir para uma plataforma própria. O caminho é definido em conjunto.</p></div></div>
+      <div class="note-row"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="5"/></svg></div><div><h4>IA com custo sob controle</h4><p>Modelos leves otimizados com GEPA, técnica de otimização de prompts que já aplicamos em produção: alta precisão com baixo custo por ordem de serviço.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GANHOS -->
+<section id="ganhos" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Ganhos esperados</span>
+      <h2>Pequenas eficiências, em grande volume</h2>
+      <p>Com milhares de ordens de serviço por mês, cada ponto de eficiência tem efeito direto no custo da manutenção.</p>
+    </div>
+    <div class="gains">
+      <div class="gain"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v4h4"/></svg></div><h3>Menos retrabalho</h3><p>Recorrências e desvios identificados cedo, antes de virarem custo.</p></div>
+      <div class="gain"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4-8 4z"/><path d="M4 8v8l8 4 8-4V8"/></svg></div><h3>Insumos sob controle</h3><p>Consumo por serviço e por área, com padrões claros de uso.</p></div>
+      <div class="gain"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div><h3>Equipes mais produtivas</h3><p>Tempo de atendimento medido e demanda prevista para planejar melhor.</p></div>
+      <div class="gain"><div class="ico"><svg viewBox="0 0 24 24"><path d="M5 20V10M12 20V4M19 20v-7"/></svg></div><h3>Decisões com base em dados</h3><p>Informações confiáveis para negociar contratos e priorizar investimentos.</p></div>
+      <div class="gain"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></div><h3>Referência de mercado</h3><p>Gestão com IA comprovada fortalece feiras, premiações e novas concessões.</p></div>
+      <div class="gain"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6"/></svg></div><h3>Escala</h3><p>O modelo construído em um hospital é replicado nos próximos ativos.</p></div>
+    </div>
+    <div class="insight">
+      <span class="big">10%</span>
+      <div><p>Uma eficiência de 10% sobre o custo atual das ordens de serviço de um único hospital representa uma economia na casa de dezenas de milhares de reais por mês, sem contar os ganhos qualitativos.</p><small>Ordem de grandeza a refinar com os dados do diagnóstico.</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- CRONOGRAMA -->
+<section id="cronograma">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Cronograma</span>
+      <h2>Uma evolução gradual, em cerca de cinco meses</h2>
+      <p>Primeiro a base e as integrações, depois o registro e a visão, e só então o piloto em campo e o aprimoramento da IA. Estimativa inicial, confirmada após o diagnóstico.</p>
+    </div>
+    <div class="tl" role="img" aria-label="Linha do tempo de 20 semanas com seis fases">
+      <div class="tl-row tl-head"><div class="tl-info"><span class="tl-ph">Fase</span></div><div class="tl-track tl-ticks"><span style="grid-column:1">1</span><span style="grid-column:4">4</span><span style="grid-column:8">8</span><span style="grid-column:12">12</span><span style="grid-column:16">16</span><span style="grid-column:20">20</span></div></div>
+      <div class="tl-row t0">
+        <div class="tl-info"><span class="tl-ph">Fase 0</span><b>Diagnóstico</b><ul><li>Mapeamento do fluxo atual das ordens de serviço</li><li>Levantamento dos sistemas e dados disponíveis</li><li>Definição conjunta do escopo</li></ul></div>
+        <div class="tl-track"><i class="tl-bar" style="grid-column:1/3"><span>1–2</span></i></div>
+      </div>
+      <div class="tl-row t1">
+        <div class="tl-info"><span class="tl-ph">Fase 1</span><b>Integrações e base única</b><ul><li>Conexão com os sistemas atuais</li><li>Padronização dos dados e custo por ordem de serviço</li></ul></div>
+        <div class="tl-track"><i class="tl-bar" style="grid-column:3/7"><span>Sem. 3–6</span></i></div>
+      </div>
+      <div class="tl-row t1">
+        <div class="tl-info"><span class="tl-ph">Fase 2</span><b>Registro inteligente</b><ul><li>Formatos de captura definidos com as equipes</li><li>Preenchimento automático pela IA e testes internos</li></ul></div>
+        <div class="tl-track"><i class="tl-bar" style="grid-column:5/11"><span>Sem. 5–10</span></i></div>
+      </div>
+      <div class="tl-row t1">
+        <div class="tl-info"><span class="tl-ph">Fase 3</span><b>Visão em tempo real</b><ul><li>Indicadores definidos com a liderança da manutenção</li></ul></div>
+        <div class="tl-track"><i class="tl-bar" style="grid-column:9/13"><span>Sem. 9–12</span></i></div>
+      </div>
+      <div class="tl-row t2">
+        <div class="tl-info"><span class="tl-ph">Fase 4</span><b>Piloto em campo</b><ul><li>Uso real com uma equipe de manutenção</li><li>Ajustes de usabilidade e adesão</li></ul></div>
+        <div class="tl-track"><i class="tl-bar" style="grid-column:13/17"><span>Sem. 13–16</span></i></div>
+      </div>
+      <div class="tl-row t3">
+        <div class="tl-info"><span class="tl-ph">Fase 5</span><b>Aprimoramento da IA</b><ul><li>Calibração com os dados do piloto</li><li>Tendências, recorrências e alertas</li></ul></div>
+        <div class="tl-track"><i class="tl-bar" style="grid-column:17/21"><span>Sem. 17–20</span></i></div>
+      </div>
+      <div class="tl-row tl-cont"><div class="tl-info"><span class="tl-ph">Contínuo</span><b>Acompanhamento e expansão</b><ul><li>Evolução da solução e replicação nos próximos ativos</li></ul></div><div class="tl-track"><i class="tl-bar dash" style="grid-column:17/21"><span>Após a entrega</span></i></div></div>
+    </div>
+    <div class="tl-legend"><span><i class="lg t0"></i>Preparação</span><span><i class="lg t1"></i>Construção</span><span><i class="lg t2"></i>Piloto</span><span><i class="lg t3"></i>IA</span></div>
+  </div>
+</section>
+
+<!-- RISCOS -->
+<section id="riscos" class="dark">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Riscos e premissas</span>
+      <h2>O que precisa estar no lugar para dar certo</h2>
+    </div>
+    <div class="rp">
+      <div>
+        <div class="risk"><span class="n">01</span><div><h3>Qualidade do histórico</h3><p>Dados antigos têm lacunas. A precisão das análises cresce com os novos registros.</p></div></div>
+        <div class="risk"><span class="n">02</span><div><h3>Acesso aos sistemas</h3><p>As integrações dependem de acesso às bases e APIs em tempo hábil.</p></div></div>
+        
+      </div>
+      <div class="prem">
+        <h3>Premissas</h3>
+        <ul>
+          <li>Um hospital como primeiro ativo do projeto</li>
+          <li>Pontos focais da manutenção disponíveis no diagnóstico</li>
+          <li>Acesso a amostras dos sistemas atuais na fase 0</li>
+          <li>Equipes com celular ou tablet e cobertura de rede</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRÓXIMOS PASSOS -->
+<section id="proximos" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Próximos passos</span>
+      <h2>Como seguimos a partir daqui</h2>
+    </div>
+    <div class="next">
+      <div class="nx"><span class="n">01</span><h3>Diagnóstico conjunto</h3><p>Conversas com as equipes de manutenção e de dados para entender o fluxo atual.</p></div>
+      <div class="nx"><span class="n">02</span><h3>Escopo e caminho</h3><p>Definição das prioridades e da forma de integração com os sistemas em uso.</p></div>
+      <div class="nx last"><span class="n">03</span><h3>Proposta detalhada</h3><p>Escopo fechado, cronograma e investimento.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="wrap foot-c">
+    <img src="assets/logo-starbridge-white.png" alt="Starbridge">
+    <span>starbridge.com.br</span>
+  </div>
+</section>
+</main>
+
+<script>
+(function(){
+  var w=document.getElementById('wave');
+  if(w){[6,10,16,12,20,14,8,18,22,12,9,15,19,11,7,13,17,10,6,12].forEach(function(h){var i=document.createElement('i');i.style.height=h+'px';w.appendChild(i);});}
+  var links=[].slice.call(document.querySelectorAll('.nav a.lnk'));
+  var map={}; links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on');});if(map[e.target.id])map[e.target.id].classList.add('on');}});},{rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('main section[id]').forEach(function(s){io.observe(s);});
+  }
+})();
+</script>
+</body>
+</html>
